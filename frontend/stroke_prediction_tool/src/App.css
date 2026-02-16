@@ -1,0 +1,94 @@
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+}
+
+.app-card {
+  width: 100%;
+  max-width: 760px;
+  background: #ffffff;
+  border: 1px solid #d7e0ea;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 24px rgba(20, 35, 52, 0.08);
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.85rem;
+}
+
+.subtitle {
+  margin: 0.4rem 0 1.4rem;
+  color: #3b5166;
+}
+
+.stroke-form {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.stroke-form label {
+  display: grid;
+  gap: 0.35rem;
+  color: #102235;
+  font-weight: 600;
+}
+
+.stroke-form input,
+.stroke-form select {
+  border: 1px solid #bfd0df;
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.95rem;
+  color: #102235;
+  background-color: #f8fbff;
+}
+
+.stroke-form button {
+  margin-top: 0.2rem;
+  border: 0;
+  border-radius: 9px;
+  padding: 0.75rem 1rem;
+  background: #0066d0;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stroke-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.error {
+  margin: 0;
+  color: #b20000;
+  font-weight: 600;
+}
+
+.result {
+  margin-top: 0.6rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #f4f8fd;
+  border: 1px solid #d6e2ee;
+}
+
+.result h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+
+.result p {
+  margin: 0.2rem 0;
+}
+
+.result pre {
+  margin: 0.5rem 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.8rem;
+}

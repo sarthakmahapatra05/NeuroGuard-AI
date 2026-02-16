@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+.env
+backend/.venv/
+frontend/stroke_prediction_tool/node_modules/
+frontend/stroke_prediction_tool/dist/
+.DS_Store
+Thumbs.db
