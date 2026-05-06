@@ -1,18 +1,22 @@
-import './App.css'
-import { StrokeForm } from './StrokeForm'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import PredictionForm from './pages/PredictionForm';
+import ResultDashboard from './pages/ResultDashboard';
 
 function App() {
   return (
-    <main className="app-shell">
-      <section className="app-card">
-        <h1>Stroke Risk Prediction</h1>
-        <p className="subtitle">
-          Submit patient details to estimate stroke risk from the backend model.
-        </p>
-        <StrokeForm />
-      </section>
-    </main>
-  )
+    <Router>
+      <div className="app-container">
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/predict" element={<PredictionForm />} />
+            <Route path="/results" element={<ResultDashboard />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;

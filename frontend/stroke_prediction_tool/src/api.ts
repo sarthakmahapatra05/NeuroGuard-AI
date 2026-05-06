@@ -1,9 +1,13 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:5000'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api'
 
 export type ApiPayload = Record<string, unknown>
-export type ApiResponse = Record<string, unknown>
+export type PredictionResponse = {
+  risk_score: number
+  risk_level: string
+  top_factors: string[]
+}
 
-export async function predictStroke(payload: ApiPayload): Promise<ApiResponse> {
+export async function predictStroke(payload: ApiPayload): Promise<PredictionResponse> {
   const response = await fetch(`${API_BASE_URL}/predict`, {
     method: 'POST',
     headers: {
@@ -17,5 +21,5 @@ export async function predictStroke(payload: ApiPayload): Promise<ApiResponse> {
     throw new Error(`Prediction failed (${response.status}): ${body}`)
   }
 
-  return (await response.json()) as ApiResponse
+  return (await response.json()) as PredictionResponse
 }

@@ -1,1 +1,1 @@
-export { StrokeForm } from './StrokeForm'
+export { default as StrokeForm } from './StrokeForm'
