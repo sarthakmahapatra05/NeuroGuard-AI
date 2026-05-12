@@ -2,7 +2,7 @@
 
 # 🧠 NeuroGuard AI
 
-<img src="https://raw.githubusercontent.com/sarthakmahapatra05/NeuroGuard-AI/main/frontend/stroke_prediction_tool/public/logo.png" alt="NeuroGuard AI Banner" width="100%" />
+<img src="https://raw.githubusercontent.com/sarthakmahapatra05/NeuroGuard-AI/main/frontend/stroke_prediction_tool/public/logo.png" alt="NeuroGuard AI Banner" width="50%" />
 
 <br/>
 
