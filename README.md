@@ -1,5 +1,5 @@
 # NeuroGuard AI
-
+<img src="https://raw.githubusercontent.com/sarthakmahapatra05/NeuroGuard-AI/main/frontend/stroke_prediction_tool/public/logo.png" alt="NeuroGuard AI Logo" width="200" />
 NeuroGuard AI is a full-stack stroke risk prediction project built with a React frontend and a Flask backend. The application collects a small set of health inputs, sends them to a trained prediction model, and returns a stroke risk score, risk level, explanation factors, charts, and PDF export support.
 
 This project is for educational and portfolio use only. It is not a medical diagnosis tool.
