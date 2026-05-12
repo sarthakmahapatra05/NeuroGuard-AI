@@ -1,132 +1,282 @@
-# NeuroGuard AI
-<img src="https://raw.githubusercontent.com/sarthakmahapatra05/NeuroGuard-AI/main/frontend/stroke_prediction_tool/public/logo.png" alt="NeuroGuard AI Logo" width="100%" />
-NeuroGuard AI is a full-stack stroke risk prediction project built with a React frontend and a Flask backend. The application collects a small set of health inputs, sends them to a trained prediction model, and returns a stroke risk score, risk level, explanation factors, charts, and PDF export support.
+<div align="center">
 
-This project is for educational and portfolio use only. It is not a medical diagnosis tool.
+# 🧠 NeuroGuard AI
 
-## Project Structure
+<img src="https://raw.githubusercontent.com/sarthakmahapatra05/NeuroGuard-AI/main/frontend/stroke_prediction_tool/public/logo.png" alt="NeuroGuard AI Banner" width="100%" />
 
-- `frontend/stroke_prediction_tool` - React + TypeScript + Vite frontend
-- `backend` - Flask API, trained model files, and inference logic
-- `docker-compose.yml` - Runs the frontend and backend together with Docker
+<br/>
 
-## Features
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Poppins&size=32&pause=1000&color=8A2BE2&center=true&vCenter=true&width=800&lines=AI-Powered+Stroke+Risk+Prediction;React+%7C+Flask+%7C+Machine+Learning;Full+Stack+Healthcare+AI+Platform" />
+</p>
 
-- Stroke risk prediction through a Flask API
-- Explanation factors based on the submitted health data
-- Interactive frontend with results dashboard
-- PDF report generation
-- Dockerized full-stack setup
+<br/>
 
-## Tech Stack
+<p align="center">
+  <img src="https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react&logoColor=black" />
+  <img src="https://img.shields.io/badge/Backend-Flask-000000?style=for-the-badge&logo=flask" />
+  <img src="https://img.shields.io/badge/Machine%20Learning-Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" />
+  <img src="https://img.shields.io/badge/Deployment-Vercel%20%7C%20Render-8A2BE2?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Containerized-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+</p>
 
-- Frontend: React, TypeScript, Vite, Recharts, jsPDF
-- Backend: Flask, NumPy, Pandas, Scikit-learn, Gunicorn
-- Containerization: Docker, Docker Compose, Nginx
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,typescript,flask,python,docker,nginx,git,vscode" />
+</p>
 
-## Prerequisites
+<p align="center">
+  <img src="https://komarev.com/ghpvc/?username=sarthakmahapatra05&label=Project+Views&color=blueviolet&style=for-the-badge" />
+</p>
 
-### For Docker setup
+<br/>
 
-- Docker Desktop
-- Docker Compose
+# 🌍 Live Demo
 
-### For local non-Docker setup
+### 🚀 https://neuroguard-sable.vercel.app/
 
-- Python 3.11 or later recommended
-- Node.js 20 or later recommended
-- npm
+</div>
 
-## Run With Docker
+---
 
-This is the easiest way to run the whole project on your device.
+# ✨ About The Project
 
-### 1. Open a terminal in the project root
+**NeuroGuard AI** is a modern full-stack healthcare AI platform that predicts stroke risk using machine learning.
+
+The application collects important healthcare parameters from users, sends them to a trained ML model through a Flask API, and generates intelligent stroke risk analysis with visual insights and downloadable reports.
+
+---
+
+# 🚀 Features
+
+✨ Modern responsive UI  
+🧠 AI-powered stroke risk prediction  
+📊 Interactive analytics dashboard  
+📈 Stroke risk score visualization  
+📄 PDF report generation  
+⚡ Fast Flask REST API  
+🐳 Dockerized full-stack architecture  
+☁️ Render + Vercel deployment ready  
+📱 Mobile responsive design  
+🔍 Health factor explanation system  
+
+---
+
+# 📚 Machine Learning Dataset
+
+The machine learning model was trained using a healthcare dataset sourced from **Kaggle**.
+
+### 🩺 Dataset Includes
+
+- Age
+- BMI
+- Glucose Level
+- Hypertension
+- Heart Disease
+- Smoking Status
+- Work Type
+- Residence Type
+- Marital Status
+- Other medical indicators
+
+> ⚠️ Dataset used only for educational and machine learning experimentation purposes.
+
+---
+
+# 🛠️ Tech Stack
+
+| Category | Technologies |
+|---|---|
+| **Frontend** | React, TypeScript, Vite, Recharts, jsPDF |
+| **Backend** | Flask, NumPy, Pandas, Scikit-learn, Gunicorn |
+| **Containerization** | Docker, Docker Compose, Nginx |
+| **Deployment** | Vercel, Render |
+
+---
+
+# 🏗️ Project Structure
 
 ```bash
-cd "C:\Users\sarth\Desktop\Stroke Predictor"
+NeuroGuard-AI/
+│
+├── frontend/
+│   └── stroke_prediction_tool/
+│
+├── backend/
+│
+├── docker-compose.yml
+│
+├── render.yaml
+│
+└── README.md
 ```
 
-### 2. Build and start both containers
+---
+
+# 🐳 Run With Docker
+
+## 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/sarthakmahapatra05/NeuroGuard-AI.git
+```
+
+---
+
+## 2️⃣ Navigate To Project
+
+```bash
+cd NeuroGuard-AI
+```
+
+---
+
+## 3️⃣ Build & Start Containers
 
 ```bash
 docker compose up --build
 ```
 
-### 3. Open the app
+---
 
-- Frontend: `http://localhost:8080`
-- Backend API: `http://localhost:5000`
-- Backend health check: `http://localhost:5000/health`
+## 4️⃣ Open Application
 
-### 4. Stop the containers
+| Service | URL |
+|---|---|
+| Frontend | http://localhost:8080 |
+| Backend API | http://localhost:5000 |
+| Health Check | http://localhost:5000/health |
 
-Press `Ctrl + C` in the running terminal, then clean up with:
+---
+
+## 5️⃣ Stop Containers
 
 ```bash
 docker compose down
 ```
 
-## Deploy To Render And Vercel
+---
 
-Recommended deployment split:
+# 💻 Run Locally Without Docker
 
-- Backend API on Render
-- Frontend on Vercel
+# 🔹 Backend Setup
 
-This project is now configured for that setup.
+```bash
+cd backend
 
-### 1. Deploy the backend to Render
+python -m venv venv
 
-Use the root-level `render.yaml`. It points Render to the `backend` folder, installs dependencies, starts Gunicorn, and exposes the `/health` endpoint.
+venv\Scripts\activate
 
-Steps:
+pip install -r requirements.txt
 
-1. Push the repository to GitHub.
-2. In Render, create a new Blueprint or Web Service from the repository.
-3. If you use the Blueprint flow, Render will read `render.yaml` from the repo root.
-4. Deploy the `stroke-predictor-api` service.
-5. After deploy, copy the generated Render URL.
+python app.py
+```
 
-Expected backend URL shape:
+Backend runs on:
 
-- `https://your-render-service.onrender.com`
+```bash
+http://localhost:5000
+```
 
-Health check:
+---
 
-- `https://your-render-service.onrender.com/health`
+# 🔹 Frontend Setup
 
-### 2. Deploy the frontend to Vercel
+```bash
+cd frontend/stroke_prediction_tool
 
-The Vercel app should use `frontend/stroke_prediction_tool` as the project root directory.
+npm install
 
-Before deploying, add this environment variable in the Vercel dashboard:
+npm run dev
+```
 
-- `VITE_API_BASE_URL=https://your-render-service.onrender.com`
+Frontend runs on:
 
-An example is included in `frontend/stroke_prediction_tool/.env.example`.
+```bash
+http://localhost:5173
+```
 
-Steps:
+---
 
-1. In Vercel, import the same GitHub repository.
-2. Set the Root Directory to `frontend/stroke_prediction_tool`.
-3. Confirm the build command is `npm run build`.
-4. Confirm the output directory is `dist`.
-5. Add `VITE_API_BASE_URL` with your Render backend URL.
-6. Deploy.
+# 🌐 Deployment Guide
 
-The frontend SPA rewrite is already configured in `frontend/stroke_prediction_tool/vercel.json`.
+## 🚀 Recommended Deployment
 
-### 3. Test the deployed app
+| Service | Platform |
+|---|---|
+| Frontend | Vercel |
+| Backend | Render |
 
-After both deploys finish:
+---
 
-1. Open the Vercel frontend URL.
-2. Submit the stroke prediction form.
-3. Confirm the frontend successfully calls the Render backend.
-4. Confirm the backend health endpoint returns a success JSON response.
+# ☁️ Backend Deployment (Render)
 
-### Useful Docker commands
+The backend deployment is configured using `render.yaml`.
+
+### Steps
+
+1. Push repository to GitHub
+2. Create a new Web Service in Render
+3. Connect GitHub repository
+4. Deploy backend service
+
+Expected Backend URL:
+
+```bash
+https://your-render-service.onrender.com
+```
+
+Health Endpoint:
+
+```bash
+https://your-render-service.onrender.com/health
+```
+
+---
+
+# ▲ Frontend Deployment (Vercel)
+
+Set project root directory:
+
+```bash
+frontend/stroke_prediction_tool
+```
+
+Add environment variable:
+
+```env
+VITE_API_BASE_URL=https://your-render-service.onrender.com
+```
+
+### Deployment Steps
+
+1. Import repository into Vercel
+2. Set root directory
+3. Add environment variable
+4. Deploy 🚀
+
+---
+
+# 🔌 API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/health` | Backend health status |
+| POST | `/predict` | Stroke risk prediction |
+
+---
+
+# 🧪 Verification Checklist
+
+- [x] Frontend opens successfully
+- [x] Backend health endpoint works
+- [x] Prediction API returns response
+- [x] Charts render correctly
+- [x] PDF export works
+
+---
+
+# 🐳 Useful Docker Commands
 
 ```bash
 docker compose up --build
@@ -136,108 +286,59 @@ docker compose logs -f
 docker compose down
 ```
 
-## How Docker Is Set Up
+---
 
-The project uses two services:
+# 🔧 Troubleshooting
 
-1. `backend`
-   Runs the Flask application with Gunicorn on port `5000`.
-
-2. `frontend`
-   Builds the Vite app and serves it through Nginx on port `8080`.
-
-The frontend sends requests to `/api`, and Nginx forwards those requests internally to the backend container.
-
-## Run Locally Without Docker
-
-If you want to run the frontend and backend directly on your own machine, follow these steps.
-
-### 1. Start the backend
-
-Open a terminal in the project root and run:
-
-```bash
-cd backend
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-python app.py
-```
-
-The backend will start on:
-
-- `http://localhost:5000`
-
-You can confirm it is healthy at:
-
-- `http://localhost:5000/health`
-
-### 2. Start the frontend
-
-Open a second terminal and run:
-
-```bash
-cd frontend/stroke_prediction_tool
-npm install
-npm run dev
-```
-
-The Vite development server will start on:
-
-- `http://localhost:5173`
-
-### 3. Use the app
-
-Open the frontend URL in your browser and submit the form. During local development, Vite proxies `/api` requests to the Flask backend on port `5000`, so no extra API URL setup is needed.
-
-## Local Development Notes
-
-- The frontend defaults to `/api` for prediction requests.
-- In local development, Vite proxies `/api` to `http://localhost:5000`.
-- In Docker, Nginx proxies `/api` to the backend container.
-- The backend loads `stroke_model.pkl` and `label_encoder.pkl` from the `backend` folder.
-
-## Verification Checklist
-
-After setup, you should be able to confirm:
-
-- Frontend opens in the browser
-- Backend `/health` returns a JSON response
-- Submitting the prediction form returns a result page
-
-## Troubleshooting
-
-### Port already in use
-
-If `5000` or `8080` is already occupied, stop the conflicting process or change the port mapping in `docker-compose.yml`.
-
-### Docker build issues
-
-Try rebuilding without cache:
+## Docker Build Issues
 
 ```bash
 docker compose build --no-cache
 ```
 
-### Python environment issues
+---
 
-Make sure the virtual environment is activated before running:
+## Python Dependency Issues
 
 ```bash
 pip install -r requirements.txt
-python app.py
 ```
 
-### Frontend dependency issues
+---
 
-If npm install fails, delete `node_modules` and reinstall:
+## Frontend Dependency Issues
 
 ```bash
 cd frontend/stroke_prediction_tool
+
 npm install
 ```
 
-## Current Endpoints
+---
 
-- `GET /health` - backend health status
-- `POST /predict` - stroke risk prediction endpoint
+# 🌟 Future Improvements
+
+- 🧠 Deep Learning Integration
+- 📱 Mobile Application
+- 🔐 Authentication System
+- ☁️ Database Integration
+- 📊 Advanced Analytics Dashboard
+- 🩺 Doctor Monitoring Panel
+
+---
+
+# 👨‍💻 Author
+
+## Sarthak Mahapatra
+
+Full Stack Developer • AI Enthusiast • Machine Learning Explorer
+
+---
+
+<div align="center">
+
+# ⭐ If You Like This Project, Give It A Star ⭐
+
+Made with ❤️ using React, Flask & Machine Learning
+
+</div>
