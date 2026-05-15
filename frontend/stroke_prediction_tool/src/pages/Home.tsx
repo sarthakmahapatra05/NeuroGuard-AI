@@ -113,9 +113,9 @@ const Home: React.FC = () => {
             </h1>
 
             <p className="landing-copy">
-              NeuroGuard is a full-stack educational app that collects six health inputs, sends them to a
-              machine learning API, and returns a risk score, level, explanations, charts, and a downloadable
-              PDF report.
+              NeuroGuard is a full-stack educational app that collects six health inputs, sends them
+              to a machine learning API, and returns a risk score, level, explanations, charts, and a
+              downloadable PDF report.
             </p>
 
             <div className="landing-actions">
@@ -188,7 +188,8 @@ const Home: React.FC = () => {
             <span className="section-kicker">Workflow</span>
             <h2>What this application actually does</h2>
             <p>
-              The landing page now describes the implemented product flow instead of generic AI-health marketing.
+              The landing page now describes the implemented product flow instead of generic
+              AI-health marketing.
             </p>
           </div>
 
@@ -210,8 +211,8 @@ const Home: React.FC = () => {
             <span className="section-kicker">Assessment Inputs</span>
             <h2>Built around the six fields the backend already expects</h2>
             <p className="section-copy">
-              The form experience in this project is focused and practical. It collects only the variables
-              currently used by the trained model and explanation layer.
+              The form experience in this project is focused and practical. It collects only the
+              variables currently used by the trained model and explanation layer.
             </p>
 
             <div className="input-list">
@@ -258,8 +259,8 @@ const Home: React.FC = () => {
             <span className="section-kicker">About The Build</span>
             <h2>Designed to feel more trustworthy, specific, and product-focused</h2>
             <p>
-              The old page mixed strong visuals with made-up metrics and generic company sections. This version
-              keeps the energy but anchors the copy in the codebase you actually have.
+              The old page mixed strong visuals with made-up metrics and generic company sections.
+              This version keeps the energy but anchors the copy in the codebase you actually have.
             </p>
           </div>
 
@@ -290,8 +291,8 @@ const Home: React.FC = () => {
               </div>
 
               <p className="footer-copy">
-                This frontend is part of a full-stack project that connects a React interface to a Flask machine
-                learning backend for stroke risk estimation and report generation.
+                This frontend is part of a full-stack project that connects a React interface to a
+                Flask machine learning backend for stroke risk estimation and report generation.
               </p>
             </div>
 
@@ -324,7 +325,13 @@ const Home: React.FC = () => {
                 </div>
                 <div className="footer-contact-row">
                   <Link2 size={16} />
-                  <span>Add repository link here when you publish the project.</span>
+                  <a
+                    href="https://github.com/sarthakmahapatra05/NeuroGuard-AI"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    github.com/sarthakmahapatra05/NeuroGuard-AI
+                  </a>
                 </div>
               </div>
             </div>
@@ -333,8 +340,8 @@ const Home: React.FC = () => {
           <div className="landing-footer-bottom">
             <p>Built in India for educational and portfolio use.</p>
             <p>
-              Disclaimer: this application provides a statistical estimate based on entered values and should
-              not be used as medical diagnosis or emergency guidance.
+              Disclaimer: this application provides a statistical estimate based on entered values and
+              should not be used as medical diagnosis or emergency guidance.
             </p>
           </div>
         </div>
