@@ -82,22 +82,22 @@ const PredictionForm: React.FC = () => {
   }
 
   return (
-    <div className="page-fade-in" style={{ paddingBottom: '80px' }}>
+    <div className="page-fade-in" style={{ paddingBottom: '60px' }}>
       <div
         className="page-header-shell"
         style={{
           background: 'var(--surface-strong)',
           borderBottom: '1px solid var(--border-color)',
-          padding: '20px 0',
-          marginBottom: '40px',
+          padding: '16px 0',
+          marginBottom: '32px',
         }}
       >
         <div className="container page-header-row">
           <div className="page-brand-row" onClick={() => navigate('/')}>
-            <img src="/logo.png" alt="Logo" style={{ height: '32px' }} />
+            <img src="/logo.png" alt="Logo" style={{ height: '30px' }} />
             <span
               style={{
-                fontSize: '1.25rem',
+                fontSize: '1.15rem',
                 fontWeight: 800,
                 fontFamily: 'Space Grotesk, sans-serif',
                 color: 'var(--primary-color)',
@@ -109,9 +109,9 @@ const PredictionForm: React.FC = () => {
           <button
             onClick={() => navigate('/')}
             className="btn btn-secondary page-header-btn"
-            style={{ padding: '8px 16px' }}
+            style={{ padding: '8px 16px', fontSize: '0.9rem' }}
           >
-            <ArrowLeft size={18} /> Cancel
+            <ArrowLeft size={16} /> Cancel
           </button>
         </div>
       </div>
