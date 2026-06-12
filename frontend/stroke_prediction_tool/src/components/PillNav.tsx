@@ -62,7 +62,6 @@ const PillNav: React.FC<PillNavProps> = ({
   const mobileMenuRef = useRef<HTMLDivElement | null>(null);
   const navItemsRef = useRef<HTMLDivElement | null>(null);
   const logoRef = useRef<HTMLAnchorElement | null>(null);
-  const menuButtonLinesRef = useRef<NodeListOf<HTMLElement> | null>(null);
 
   const cssVars = useMemo(
     () =>
