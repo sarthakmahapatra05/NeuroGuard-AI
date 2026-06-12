@@ -480,6 +480,69 @@ textarea {
   color: var(--text-primary);
 }
 
+.landing-nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 28px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 101;
+}
+
+.landing-nav-hamburger span {
+  width: 28px;
+  height: 3px;
+  background: var(--text-primary);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.landing-nav-mobile-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 100;
+}
+
+.landing-nav-mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.landing-nav-mobile-links a {
+  color: var(--text-primary);
+}
+
+.landing-nav-mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.landing-nav-mobile-actions .btn {
+  width: 100%;
+  justify-content: center;
+}
+
 /* Landing navbar CTA sizing (override base .btn sizing) */
 .landing-nav-actions .btn {
   padding: 10px 18px;
@@ -1301,11 +1364,16 @@ header#top.landing-hero > *,
 
 @media (max-width: 860px) {
   .landing-nav-inner {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
-  .landing-nav-links {
+  .landing-nav-links,
+  .landing-nav-actions {
     display: none;
+  }
+
+  .landing-nav-hamburger {
+    display: flex;
   }
 
   .input-list {
