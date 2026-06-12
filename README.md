@@ -40,18 +40,19 @@
 
 # ✨ About The Project
 
-**NeuroGuard AI** is a modern full-stack healthcare AI platform that predicts stroke risk using machine learning.
+**NeuroGuard AI** is a modern full-stack healthcare AI platform that is evolving from a stroke-only predictor into a multi-disease healthcare intelligence platform.
 
-The application collects important healthcare parameters from users, sends them to a trained ML model through a Flask API, and generates intelligent stroke risk analysis with visual insights and downloadable reports.
+The current MVP foundation trains and serves machine learning models for `stroke`, `diabetes`, and `chronic kidney disease`, exposes disease-specific REST endpoints, and returns structured risk analysis with rule-based factor explanations. `Heart disease` support is scaffolded in the API contract and training pipeline, and it becomes trainable as soon as the raw `heart.csv` dataset is added.
 
 ---
 
 # 🚀 Features
 
 ✨ Modern responsive UI  
-🧠 AI-powered stroke risk prediction  
+🧠 Multi-disease risk prediction foundation  
+🩺 Stroke, diabetes, and kidney prediction endpoints  
 📊 Interactive analytics dashboard  
-📈 Stroke risk score visualization  
+📈 Structured risk score visualization  
 📄 PDF report generation  
 ⚡ Fast Flask REST API  
 🐳 Dockerized full-stack architecture  
@@ -63,22 +64,37 @@ The application collects important healthcare parameters from users, sends them 
 
 # 📚 Machine Learning Dataset
 
-The machine learning model was trained using a healthcare dataset sourced from **Kaggle**.
+The machine learning foundation uses healthcare datasets sourced from **Kaggle/UCI-style tabular datasets**.
 
-### 🩺 Dataset Includes
 
-- Age
-- BMI
-- Glucose Level
-- Hypertension
-- Heart Disease
-- Smoking Status
-- Work Type
-- Residence Type
-- Marital Status
-- Other medical indicators
+### 🩺 Included Datasets
+
+- `healthcare-dataset-stroke-data.csv`
+- `diabetes_prediction_dataset.csv`
+- `kidney_disease_dataset.csv`
+- `heart-disease-prediction.ipynb` (not directly trainable until the raw `heart.csv` is added)
 
 > ⚠️ Dataset used only for educational and machine learning experimentation purposes.
+
+---
+
+# 🏆 Model Performance
+
+Our machine learning pipeline uses **SMOTEENN** for robust resampling of imbalanced data, combined with heavily tuned hyper-parameters and threshold calibration. 
+
+### 🧠 Stroke Prediction Model (Logistic Regression)
+Trained on 5,110 healthcare records:
+- **ROC-AUC:** 84.23%
+- **Recall:** 78.00%
+- **Precision:** 17.65%
+- **F1 Score:** 28.78%
+
+### 🩸 Diabetes Prediction Model (XGBoost)
+- **ROC-AUC:** 97.76%
+- **Recall:** 91.45%
+
+### 🏥 Kidney Disease Model (Random Forest)
+- **ROC-AUC:** 51.14%
 
 ---
 
@@ -100,13 +116,16 @@ NeuroGuard-AI/
 │
 ├── frontend/
 │   └── stroke_prediction_tool/
-│
 ├── backend/
-│
+│   ├── app.py
+│   ├── disease_config.py
+│   ├── model_service.py
+│   └── artifacts/
+├── ml/
+│   ├── archive (1)/
+│   └── train_all_models.py
 ├── docker-compose.yml
-│
 ├── render.yaml
-│
 └── README.md
 ```
 
@@ -168,6 +187,8 @@ python -m venv venv
 venv\Scripts\activate
 
 pip install -r requirements.txt
+
+python ..\ml\train_all_models.py
 
 python app.py
 ```
@@ -261,8 +282,14 @@ VITE_API_BASE_URL=https://your-render-service.onrender.com
 
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/health` | Backend health status |
-| POST | `/predict` | Stroke risk prediction |
+| GET | `/health` | Backend health status and model readiness |
+| GET | `/model-metrics` | Saved training metrics for each disease |
+| GET | `/supported-diseases` | Supported diseases and required fields |
+| POST | `/predict` | Backward-compatible stroke prediction alias |
+| POST | `/predict/stroke` | Stroke risk prediction |
+| POST | `/predict/diabetes` | Diabetes risk prediction |
+| POST | `/predict/kidney` | Chronic kidney disease risk prediction |
+| POST | `/predict/heart` | Contract-ready endpoint, responds once `heart.csv` is added and trained |
 
 ---
 
@@ -270,7 +297,7 @@ VITE_API_BASE_URL=https://your-render-service.onrender.com
 
 - [x] Frontend opens successfully
 - [x] Backend health endpoint works
-- [x] Prediction API returns response
+- [x] Multi-disease prediction API returns response
 - [x] Charts render correctly
 - [x] PDF export works
 

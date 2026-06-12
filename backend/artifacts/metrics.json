@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-06-12T20:14:25.883088+00:00",
+  "models": {
+    "stroke": {
+      "disease": "stroke",
+      "model_name": "logistic_regression",
+      "accuracy": 0.8112,
+      "precision": 0.1765,
+      "recall": 0.78,
+      "f1_score": 0.2878,
+      "roc_auc": 0.8423,
+      "test_size": 1022,
+      "artifact_path": "C:\\Users\\sarth\\Desktop\\Stroke Predictor\\backend\\artifacts\\stroke_model.pkl",
+      "training_rows": 5110,
+      "feature_count": 10
+    },
+    "diabetes": {
+      "disease": "diabetes",
+      "model_name": "xgboost",
+      "accuracy": 0.9006,
+      "precision": 0.4676,
+      "recall": 0.9145,
+      "f1_score": 0.6188,
+      "roc_auc": 0.9776,
+      "test_size": 19230,
+      "artifact_path": "C:\\Users\\sarth\\Desktop\\Stroke Predictor\\backend\\artifacts\\diabetes_model.pkl",
+      "training_rows": 96146,
+      "feature_count": 8
+    },
+    "kidney": {
+      "disease": "kidney",
+      "model_name": "random_forest",
+      "accuracy": 0.7972,
+      "precision": 0.2273,
+      "recall": 0.0061,
+      "f1_score": 0.0119,
+      "roc_auc": 0.5114,
+      "test_size": 4108,
+      "artifact_path": "C:\\Users\\sarth\\Desktop\\Stroke Predictor\\backend\\artifacts\\kidney_model.pkl",
+      "training_rows": 20538,
+      "feature_count": 19
+    }
+  },
+  "skipped": {
+    "heart": "Dataset not found: C:\\Users\\sarth\\Desktop\\Stroke Predictor\\ml\\archive (1)\\heart.csv"
+  }
+}

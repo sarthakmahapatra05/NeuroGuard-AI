@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useMemo, useRef } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   BarChart,
   Bar,
@@ -11,29 +11,58 @@ import {
   Cell,
   PieChart,
   Pie,
-} from 'recharts';
-import { Download, RefreshCcw, AlertTriangle, CheckCircle, Info, ShieldCheck, Home } from 'lucide-react';
-import { generatePDF } from '../utils/pdfGenerator';
+} from 'recharts'
+import {
+  Download,
+  RefreshCcw,
+  AlertTriangle,
+  CheckCircle,
+  Info,
+  ShieldCheck,
+  Home,
+} from 'lucide-react'
+import type { PredictionResponse } from '../api'
+import { diseaseDefinitionMap, type DiseaseDefinition } from '../diseaseConfig'
+import { generatePDF } from '../utils/pdfGenerator'
+
+type ResultLocationState = {
+  disease?: string
+  result: PredictionResponse
+  inputData: Record<string, string>
+}
+
+const fallbackState: ResultLocationState = {
+  disease: 'stroke',
+  result: { risk_score: 0, risk_level: 'Unknown', top_factors: [] },
+  inputData: {},
+}
+
+const formatLabel = (value: string) =>
+  value
+    .replaceAll('_', ' ')
+    .replaceAll('(', ' (')
+    .trim()
 
 const ResultDashboard: React.FC = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const reportRef = useRef<HTMLDivElement>(null);
+  const location = useLocation()
+  const navigate = useNavigate()
+  const reportRef = useRef<HTMLDivElement>(null)
 
-  const { result, inputData } = location.state || {
-    result: { risk_score: 0, risk_level: 'Unknown', top_factors: [] },
-    inputData: {},
-  };
+  const { result, inputData, disease } =
+    (location.state as ResultLocationState | null) ?? fallbackState
+
+  const definition: DiseaseDefinition =
+    diseaseDefinitionMap[disease ?? result.disease ?? 'stroke'] ?? diseaseDefinitionMap.stroke
 
   if (!location.state) {
     return (
       <div className="container" style={{ textAlign: 'center', padding: '100px 0' }}>
-        <h2>No assessment data found.</h2>
+        <h2>No report data is available.</h2>
         <button onClick={() => navigate('/')} className="btn btn-primary">
-          Return Home
+          Return to Home
         </button>
       </div>
-    );
+    )
   }
 
   const riskColor =
@@ -41,26 +70,44 @@ const ResultDashboard: React.FC = () => {
       ? 'var(--danger-color)'
       : result.risk_level === 'Moderate'
         ? 'var(--warning-color)'
-        : 'var(--success-color)';
+        : 'var(--success-color)'
 
-  const metricData = [
-    { name: 'Glucose', value: parseFloat(inputData.avg_glucose_level), normal: 100 },
-    { name: 'BMI', value: parseFloat(inputData.bmi), normal: 25 },
-    { name: 'Age', value: parseFloat(inputData.age), normal: 40 },
-  ];
+  const metricData = useMemo(
+    () =>
+      definition.metrics
+        .map((metric) => ({
+          name: metric.label,
+          value: Number(inputData[metric.key] ?? 0),
+          normal: metric.baseline,
+        }))
+        .filter((metric) => !Number.isNaN(metric.value)),
+    [definition.metrics, inputData],
+  )
+
+  const patientData = useMemo(
+    () =>
+      Object.entries(inputData)
+        .filter(([, value]) => value !== '')
+        .map(([key, value]) => ({
+          label: formatLabel(key),
+          value,
+        })),
+    [inputData],
+  )
 
   const pieData = [
     { name: 'Risk', value: result.risk_score },
     { name: 'Safe', value: 100 - result.risk_score },
-  ];
+  ]
 
   const handleDownload = () => {
-    generatePDF(result, inputData);
-  };
+    generatePDF(result, inputData, definition)
+  }
 
   return (
     <div className="page-fade-in" style={{ paddingBottom: '100px' }}>
       <div
+        className="page-header-shell"
         style={{
           background: 'var(--surface-strong)',
           borderBottom: '1px solid var(--border-color)',
@@ -68,14 +115,8 @@ const ResultDashboard: React.FC = () => {
           marginBottom: '40px',
         }}
       >
-        <div
-          className="container"
-          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-        >
-          <div
-            style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}
-            onClick={() => navigate('/')}
-          >
+        <div className="container page-header-row">
+          <div className="page-brand-row" onClick={() => navigate('/')}>
             <img src="/logo.png" alt="Logo" style={{ height: '32px' }} />
             <span
               style={{
@@ -88,15 +129,27 @@ const ResultDashboard: React.FC = () => {
               NeuroGuard
             </span>
           </div>
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-            <button onClick={() => navigate('/')} className="btn btn-secondary" style={{ padding: '8px 16px' }}>
+          <div className="page-header-actions">
+            <button
+              onClick={() => navigate('/')}
+              className="btn btn-secondary page-header-btn"
+              style={{ padding: '8px 16px' }}
+            >
               <Home size={18} /> Home
             </button>
-            <button onClick={() => navigate('/predict')} className="btn btn-secondary" style={{ padding: '8px 16px' }}>
-              <RefreshCcw size={18} /> New Analysis
+            <button
+              onClick={() => navigate(`/predict?disease=${definition.slug}`)}
+              className="btn btn-secondary page-header-btn"
+              style={{ padding: '8px 16px' }}
+            >
+              <RefreshCcw size={18} /> New Review
             </button>
-            <button onClick={handleDownload} className="btn btn-primary" style={{ padding: '8px 20px' }}>
-              <Download size={18} /> Download PDF
+            <button
+              onClick={handleDownload}
+              className="btn btn-primary page-header-btn"
+              style={{ padding: '8px 20px' }}
+            >
+              <Download size={18} /> Download Report
             </button>
           </div>
         </div>
@@ -105,17 +158,21 @@ const ResultDashboard: React.FC = () => {
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <div className="result-pill">
-            <ShieldCheck size={18} /> Assessment Complete
+            <ShieldCheck size={18} /> Report Ready
           </div>
-          <h2 style={{ fontSize: '2.5rem' }}>Your Risk Report</h2>
-          <p style={{ color: 'var(--text-secondary)' }}>Generated by NeuroGuard Engine v2.4.0</p>
+          <h2 className="results-title" style={{ fontSize: '2.5rem' }}>
+            {definition.title} Report
+          </h2>
+          <p style={{ color: 'var(--text-secondary)' }}>
+            Generated from the submitted clinical inputs for {definition.title.toLowerCase()} review
+          </p>
         </div>
 
         <div ref={reportRef} className="results-grid">
           <div className="glass-panel result-score-card">
-            <h3 className="result-section-label">Risk Probability</h3>
+            <h3 className="result-section-label">Risk Summary</h3>
 
-            <div style={{ position: 'relative', width: '220px', height: '220px', margin: '0 auto 32px' }}>
+            <div className="result-chart-wrap" style={{ position: 'relative', width: '220px', height: '220px', margin: '0 auto 32px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -187,7 +244,7 @@ const ResultDashboard: React.FC = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
             <div className="glass-panel result-panel">
-              <h3 style={{ marginBottom: '32px', fontSize: '1.25rem' }}>Biometric Comparison</h3>
+              <h3 style={{ marginBottom: '32px', fontSize: '1.25rem' }}>Indicator Comparison</h3>
               <div style={{ height: '300px' }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={metricData} layout="vertical" margin={{ left: 20 }}>
@@ -202,37 +259,50 @@ const ResultDashboard: React.FC = () => {
                         boxShadow: 'var(--shadow-md)',
                       }}
                     />
-                    <Bar dataKey="value" fill="var(--primary-color)" radius={[0, 6, 6, 0]} name="Your Metric" barSize={32} />
-                    <Bar dataKey="normal" fill="var(--chart-neutral)" radius={[0, 6, 6, 0]} name="Baseline" barSize={32} />
+                    <Bar dataKey="value" fill="var(--primary-color)" radius={[0, 6, 6, 0]} name="Submitted Value" barSize={32} />
+                    <Bar dataKey="normal" fill="var(--chart-neutral)" radius={[0, 6, 6, 0]} name="Reference Value" barSize={32} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '24px', fontStyle: 'italic' }}>
-                * Comparison baselines are statistically derived averages.
+                * Reference values are displayed for visual context within the selected assessment.
               </p>
             </div>
 
             <div className="glass-panel result-panel">
-              <h3 style={{ marginBottom: '20px', fontSize: '1.25rem' }}>Clinical Interpretation</h3>
+              <h3 style={{ marginBottom: '20px', fontSize: '1.25rem' }}>Interpretation</h3>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.7 }}>
-                Our analysis shows a <strong>{result.risk_level.toLowerCase()}</strong> probability
-                score. This means your current biometric profile correlates with historical data of
-                individuals in the {result.risk_level.toLowerCase()} risk category.
+                The submitted profile is currently classified within the{' '}
+                <strong>{result.risk_level.toLowerCase()}</strong> risk range for{' '}
+                {definition.title.toLowerCase()}. This summary should be interpreted together with
+                clinical context and professional review.
               </p>
               <div className="result-guidance-card">
-                <h4 style={{ color: 'var(--primary-color)', marginBottom: '12px' }}>Actionable Guidance:</h4>
+                <h4 style={{ color: 'var(--primary-color)', marginBottom: '12px' }}>Recommended Next Steps:</h4>
                 <ul style={{ paddingLeft: '20px', color: 'var(--text-primary)', fontSize: '0.95rem', display: 'grid', gap: '10px' }}>
-                  <li>Discuss these results with a certified medical professional.</li>
-                  <li>Focus on maintaining a balanced diet and regular physical activity.</li>
-                  <li>Monitor blood pressure and glucose levels twice weekly.</li>
+                  {definition.recommendations.map((recommendation) => (
+                    <li key={recommendation}>{recommendation}</li>
+                  ))}
                 </ul>
+              </div>
+            </div>
+
+            <div className="glass-panel result-panel">
+              <h3 style={{ marginBottom: '20px', fontSize: '1.25rem' }}>Submitted Information</h3>
+              <div className="submitted-input-grid">
+                {patientData.map((item) => (
+                  <div key={item.label} className="submitted-input-card">
+                    <span>{item.label}</span>
+                    <strong>{String(item.value)}</strong>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ResultDashboard;
+export default ResultDashboard

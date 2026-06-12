@@ -85,6 +85,7 @@ const FlowArt: React.FC<FlowArtProps> = ({
 
         if (i > 0) {
           gsap.set(inner, { rotation: 0, transformOrigin: 'bottom left' });
+
           const tween = gsap.to(inner, {
             rotation: 0,
             ease: 'none',
@@ -92,9 +93,12 @@ const FlowArt: React.FC<FlowArtProps> = ({
               trigger: section,
               start: 'top bottom',
               end: 'top 25%',
-              scrub: true,
+              scrub: false,
+              // run once per section (prevents re-animation when scrolling back)
+              once: true,
             },
           });
+
           if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
         }
 
@@ -106,6 +110,8 @@ const FlowArt: React.FC<FlowArtProps> = ({
               end: 'bottom top',
               pin: true,
               pinSpacing: false,
+              // run once per section (prevents re-pinning on back scroll)
+              once: true,
             }),
           );
         }

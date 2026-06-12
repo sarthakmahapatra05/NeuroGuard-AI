@@ -1,7 +1,7 @@
 import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import {
-  Activity,
   ArrowRight,
   Brain,
   Download,
@@ -9,60 +9,59 @@ import {
   ShieldAlert,
   Stethoscope,
   BarChart3,
-  Mail,
   Cpu,
   CheckCircle2,
-  Link2,
 } from 'lucide-react';
+import { diseaseDefinitions } from '../diseaseConfig';
 
 const inputs = [
   'Age',
-  'Hypertension status',
-  'Heart disease history',
-  'Average glucose level',
+  'Blood pressure status',
+  'Glucose and HbA1c values',
+  'Kidney function markers',
   'BMI',
-  'Smoking status',
+  'Smoking or lifestyle status',
 ];
 
 const workflow = [
   {
     icon: <Stethoscope size={22} />,
-    title: 'Enter core health inputs',
+    title: 'Select an assessment',
     description:
-      'The assessment form captures the six fields currently used by the prediction API.',
+      'Choose a supported clinical workflow based on the condition you want to review.',
   },
   {
     icon: <Cpu size={22} />,
-    title: 'Run the Flask prediction model',
+    title: 'Submit structured inputs',
     description:
-      'A Random Forest model scores the request and returns a percentage risk score, risk level, and explanation factors.',
+      'Enter the requested health and laboratory values through a guided, disease-specific form.',
   },
   {
     icon: <Download size={22} />,
-    title: 'Review and export results',
+    title: 'Review the report',
     description:
-      'The results page visualizes the score, compares metrics to baselines, and lets you download a PDF summary.',
+      'Receive a clear risk summary, supporting factors, visual comparisons, and a downloadable PDF report.',
   },
 ];
 
 const featureCards = [
   {
     icon: <BarChart3 size={24} />,
-    title: 'Clear result dashboard',
+    title: 'Unified reporting experience',
     description:
-      'Charts and score cards turn the model output into something easier to review at a glance.',
+      'A consistent dashboard presents risk status, supporting inputs, and visual summaries across supported conditions.',
   },
   {
     icon: <Brain size={24} />,
-    title: 'Factor-based explanations',
+    title: 'Explainable outputs',
     description:
-      'The backend highlights why a result may be elevated using glucose, BMI, age, blood pressure, heart disease, and smoking signals.',
+      'Each assessment includes important contributing factors to help users interpret the result more clearly.',
   },
   {
     icon: <ShieldAlert size={24} />,
-    title: 'Educational use only',
+    title: 'Clinical caution',
     description:
-      'This project supports awareness and demonstration. It is not a substitute for clinical diagnosis or emergency care.',
+      'The platform supports early awareness and structured review, but it does not replace medical diagnosis or treatment.',
   },
 ];
 
@@ -75,121 +74,219 @@ const footerLinks = [
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const panelRef = React.useRef<HTMLDivElement | null>(null);
+  const hamburgerRef = React.useRef<HTMLButtonElement | null>(null);
+
+  React.useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMenuOpen(false);
+    };
+
+    const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as Node | null;
+      if (!target) return;
+
+      const panelEl = panelRef.current;
+      const hamburgerEl = hamburgerRef.current;
+
+      if (panelEl && panelEl.contains(target)) return;
+      if (hamburgerEl && hamburgerEl.contains(target)) return;
+
+      setIsMenuOpen(false);
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('touchstart', onPointerDown);
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('mousedown', onPointerDown);
+      window.removeEventListener('touchstart', onPointerDown);
+    };
+  }, [isMenuOpen]);
 
   return (
     <div className="landing-page page-fade-in">
       <nav className="landing-nav">
         <div className="container landing-nav-inner">
-          <a href="#top" className="brand-mark" aria-label="NeuroGuard home">
+          <a
+            href="#top"
+            className="brand-mark"
+            aria-label="NeuroGuard home"
+            onClick={() => setIsMenuOpen(false)}
+          >
             <img src="/logo.png" alt="NeuroGuard logo" className="brand-logo" />
             <div>
               <span className="brand-title">NeuroGuard</span>
-              <span className="brand-subtitle">Stroke risk assessment interface</span>
+              <span className="brand-subtitle">Healthcare intelligence platform</span>
             </div>
           </a>
 
           <div className="landing-nav-links">
-            <a href="#workflow">Workflow</a>
-            <a href="#inputs">Inputs</a>
-            <a href="#about">About</a>
+            <a href="#workflow" onClick={() => setIsMenuOpen(false)}>Workflow</a>
+            <a href="#inputs" onClick={() => setIsMenuOpen(false)}>Inputs</a>
+            <a href="#about" onClick={() => setIsMenuOpen(false)}>About</a>
           </div>
 
-          <button onClick={() => navigate('/predict')} className="btn btn-primary">
-            Start Assessment <ArrowRight size={18} />
+          <button
+            ref={hamburgerRef}
+            type="button"
+            className="landing-nav-hamburger"
+            aria-label="Open menu"
+            aria-expanded={isMenuOpen}
+            onClick={() => setIsMenuOpen((v) => !v)}
+          >
+            <span />
+            <span />
+            <span />
           </button>
+
+          <div className="landing-nav-actions">
+            <a
+              href="https://symptocare-sable.vercel.app/"
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-secondary"
+            >
+              Book Appointments
+            </a>
+
+            <button
+              onClick={() => {
+                setIsMenuOpen(false);
+                navigate('/predict?disease=stroke');
+              }}
+              className="btn btn-primary"
+            >
+              Start Review <ArrowRight size={18} />
+            </button>
+          </div>
+
+          {isMenuOpen && (
+            <div
+              ref={panelRef}
+              className="landing-nav-mobile-panel"
+              role="dialog"
+              aria-label="Mobile navigation"
+            >
+              <div className="landing-nav-mobile-links">
+                <a href="#workflow" onClick={() => setIsMenuOpen(false)}>
+                  Workflow
+                </a>
+                <a href="#inputs" onClick={() => setIsMenuOpen(false)}>
+                  Inputs
+                </a>
+                <a href="#about" onClick={() => setIsMenuOpen(false)}>
+                  About
+                </a>
+              </div>
+
+              <div className="landing-nav-mobile-actions">
+                <a
+                  href="https://symptocare-sable.vercel.app/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-secondary"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Book Appointments
+                </a>
+
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    navigate('/predict?disease=stroke');
+                  }}
+                >
+                  Start Review <ArrowRight size={18} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
       <header id="top" className="landing-hero">
         <div className="container landing-hero-grid">
           <div className="slide-up">
-            <div className="eyebrow">
-              <Activity size={16} />
-              React frontend for a Flask-based stroke prediction workflow
-            </div>
-
             <h1 className="landing-title">
-              A sharper landing page for a real stroke risk prediction project.
+              Signals Over Symptoms
             </h1>
 
             <p className="landing-copy">
-              NeuroGuard is a full-stack educational app that collects six health inputs, sends them
-              to a machine learning API, and returns a risk score, level, explanations, charts, and a
-              downloadable PDF report.
+              NeuroGuard transforms clinical data into actionable health insights. Analyze risk factors, assess disease likelihood, and receive clear, AI-powered health intelligence.
             </p>
 
             <div className="landing-actions">
-              <button onClick={() => navigate('/predict')} className="btn btn-primary landing-primary">
-                Open Assessment <ArrowRight size={18} />
+              <button onClick={() => navigate('/predict?disease=stroke')} className="btn btn-primary landing-primary">
+                Open Platform <ArrowRight size={18} />
               </button>
               <a href="#workflow" className="btn btn-secondary landing-secondary">
-                See How It Works
+                View Workflow
               </a>
             </div>
 
             <div className="hero-notes">
               <div className="hero-note-card">
-                <span className="hero-note-label">Frontend</span>
-                <strong>React + TypeScript + Vite</strong>
+                <span className="hero-note-label">Platform</span>
+                <strong>Structured assessment workspace</strong>
               </div>
               <div className="hero-note-card">
-                <span className="hero-note-label">Backend</span>
-                <strong>Flask prediction API</strong>
+                <span className="hero-note-label">Coverage</span>
+                <strong>Stroke, diabetes, kidney</strong>
               </div>
               <div className="hero-note-card">
                 <span className="hero-note-label">Output</span>
-                <strong>Score, factors, charts, PDF</strong>
+                <strong>Risk summary and PDF report</strong>
               </div>
             </div>
           </div>
 
-          <div className="slide-up hero-panel" style={{ animationDelay: '0.15s' }}>
-            <div className="hero-panel-top">
-              <span className="hero-chip">Current assessment flow</span>
-              <span className="hero-chip hero-chip-muted">6 inputs</span>
-            </div>
-
-            <div className="hero-diagram">
-              <div className="hero-stage">
-                <span className="hero-stage-number">01</span>
-                <div>
-                  <h3>Input form</h3>
-                  <p>Age, BMI, glucose, hypertension, heart disease, and smoking status.</p>
-                </div>
-              </div>
-
-              <div className="hero-stage-connector" />
-
-              <div className="hero-stage">
-                <span className="hero-stage-number">02</span>
-                <div>
-                  <h3>Prediction request</h3>
-                  <p>Frontend sends a POST request to the Flask `/predict` endpoint.</p>
-                </div>
-              </div>
-
-              <div className="hero-stage-connector" />
-
-              <div className="hero-stage">
-                <span className="hero-stage-number">03</span>
-                <div>
-                  <h3>Risk report</h3>
-                  <p>Users see their score, highlighted factors, chart comparisons, and PDF export.</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </header>
+
+      <section className="landing-section landing-section-dark">
+        <div className="container">
+          <div className="section-heading">
+            <span className="section-kicker">Supported Diseases</span>
+            <h2>Current assessment coverage</h2>
+          </div>
+
+          <div className="workflow-grid">
+            {diseaseDefinitions.map((item) => (
+              <article key={item.slug} className="workflow-card">
+                <div className="workflow-icon">
+                  <HeartPulse size={24} />
+                </div>
+                <h3>{item.title}</h3>
+                <p>{item.shortDescription}</p>
+                <button
+                  className="btn btn-secondary"
+                  style={{ marginTop: '18px', width: '100%' }}
+                  onClick={() => item.endpointReady && navigate(`/predict?disease=${item.slug}`)}
+                  disabled={!item.endpointReady}
+                >
+                  {item.endpointReady ? 'Open Assessment' : 'Coming Soon'}
+                </button>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section id="workflow" className="landing-section">
         <div className="container">
           <div className="section-heading">
             <span className="section-kicker">Workflow</span>
-            <h2>What this application actually does</h2>
+            <h2>How the platform works</h2>
             <p>
-              The landing page now describes the implemented product flow instead of generic
-              AI-health marketing.
+              NeuroGuard is designed to present a focused product journey with clear input, analysis,
+              and reporting steps.
             </p>
           </div>
 
@@ -209,10 +306,10 @@ const Home: React.FC = () => {
         <div className="container landing-split">
           <div>
             <span className="section-kicker">Assessment Inputs</span>
-            <h2>Built around the six fields the backend already expects</h2>
+            <h2>Built around structured clinical inputs</h2>
             <p className="section-copy">
-              The form experience in this project is focused and practical. It collects only the
-              variables currently used by the trained model and explanation layer.
+              Each assessment is aligned to its underlying model requirements, ensuring that the form
+              reflects the inputs needed for that specific review.
             </p>
 
             <div className="input-list">
@@ -225,31 +322,6 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <aside className="project-facts">
-            <div className="project-facts-header">
-              <HeartPulse size={22} />
-              <h3>Project facts</h3>
-            </div>
-
-            <div className="project-facts-grid">
-              <div>
-                <span>Prediction route</span>
-                <strong>`POST /predict`</strong>
-              </div>
-              <div>
-                <span>Returned values</span>
-                <strong>Risk score, level, factors</strong>
-              </div>
-              <div>
-                <span>Charts used</span>
-                <strong>Bar + pie dashboards</strong>
-              </div>
-              <div>
-                <span>Export</span>
-                <strong>PDF report generation</strong>
-              </div>
-            </div>
-          </aside>
         </div>
       </section>
 
@@ -257,10 +329,10 @@ const Home: React.FC = () => {
         <div className="container">
           <div className="section-heading">
             <span className="section-kicker">About The Build</span>
-            <h2>Designed to feel more trustworthy, specific, and product-focused</h2>
+            <h2>Designed for clarity, consistency, and trust</h2>
             <p>
-              The old page mixed strong visuals with made-up metrics and generic company sections.
-              This version keeps the energy but anchors the copy in the codebase you actually have.
+              The interface is intentionally simple and formal. It is designed to communicate
+              healthcare information with restraint, clarity, and a product-oriented structure.
             </p>
           </div>
 
@@ -278,29 +350,33 @@ const Home: React.FC = () => {
 
       <footer id="footer" className="landing-footer">
         <div className="container">
-          <div className="landing-footer-top">
+          <div className="landing-footer-top landing-footer-grid">
             <div className="footer-brand-block">
               <div className="brand-mark footer-brand">
-                <img src="/logo.png" alt="NeuroGuard logo" className="brand-logo footer-brand-logo" />
+                <img
+                  src="/logo.png"
+                  alt="NeuroGuard logo"
+                  className="brand-logo footer-brand-logo"
+                />
                 <div>
                   <span className="brand-title footer-brand-title">NeuroGuard</span>
                   <span className="brand-subtitle footer-brand-subtitle">
-                    Educational stroke risk prediction project
+                    AI-assisted health risk assessment
                   </span>
                 </div>
               </div>
 
-              <p className="footer-copy">
-                This frontend is part of a full-stack project that connects a React interface to a
-                Flask machine learning backend for stroke risk estimation and report generation.
+              <p className="footer-copy footer-copy-lead">
+                Structured input → transparent risk summary → exportable PDF report. Designed to help you review
+                health information clearly and professionally.
               </p>
             </div>
 
             <div className="footer-column">
-              <h4>Navigation</h4>
+              <h4 className="footer-heading">Quick links</h4>
               <div className="footer-links">
                 {footerLinks.map((link) => (
-                  <a key={link.label} href={link.href}>
+                  <a key={link.label} href={link.href} className="footer-link">
                     {link.label}
                   </a>
                 ))}
@@ -308,40 +384,28 @@ const Home: React.FC = () => {
             </div>
 
             <div className="footer-column">
-              <h4>Tech Stack</h4>
-              <div className="footer-meta">
-                <span>Frontend: React, TypeScript, Vite, Recharts, jsPDF</span>
-                <span>Backend: Flask, NumPy, pickle model loading</span>
-                <span>Model output: score, level, factor explanations</span>
-              </div>
-            </div>
-
-            <div className="footer-column">
-              <h4>Project Contact</h4>
-              <div className="footer-contact-card">
-                <div className="footer-contact-row">
-                  <Mail size={16} />
-                  <a href="mailto:sarthakmahapatra303@gmail.com">sarthakmahapatra303@gmail.com</a>
-                </div>
-                <div className="footer-contact-row">
-                  <Link2 size={16} />
-                  <a
-                    href="https://github.com/sarthakmahapatra05/NeuroGuard-AI"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    github.com/sarthakmahapatra05/NeuroGuard-AI
-                  </a>
-                </div>
+              <h4 className="footer-heading">What you get</h4>
+              <div className="footer-meta footer-bullets">
+                <span className="footer-bullet">
+                  <CheckCircle2 size={16} /> Risk summary + key indicators
+                </span>
+                <span className="footer-bullet">
+                  <CheckCircle2 size={16} /> Structured input review
+                </span>
+                <span className="footer-bullet">
+                  <CheckCircle2 size={16} /> Downloadable PDF report
+                </span>
               </div>
             </div>
           </div>
 
-          <div className="landing-footer-bottom">
-            <p>Built in India for educational and portfolio use.</p>
-            <p>
-              Disclaimer: this application provides a statistical estimate based on entered values and
-              should not be used as medical diagnosis or emergency guidance.
+          <div className="landing-footer-bottom footer-bottom-row">
+            <p className="footer-bottom-left">
+              © {new Date().getFullYear()} NeuroGuard. All rights reserved.
+            </p>
+            <p className="footer-bottom-right">
+              Disclaimer: model-based risk estimates for informational use only. Not medical diagnosis,
+              prescription, or emergency guidance.
             </p>
           </div>
         </div>
